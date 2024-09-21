@@ -1,30 +1,20 @@
-import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
-import { signOut, getUserProfile } from "@/app/(auth)/action"
+import React from 'react'
+import Inbox from '@/components/home/inbox'
+import PageHeader from '@/components/home/pageHeader'
+import ShareLink from '@/components/home/shareLink'
+import MessageList from '@/components/home/messageList'
 
-export default async function Home() {
-    const supabase = createClient();
-
-    const { data: messages } = await supabase.from("messages").select("*");
-    const userProfile  = await getUserProfile();
-
-    const user = userProfile?.user;
-    const profile = userProfile?.profile;
-
-    return (
-        <div className="flex flex-col justify-center p-8 gap-8">
-            {messages?.map((message) => (
-                <Button key={message.id}>{message.message}</Button>
-            ))}
-
-
-            <form action={signOut} className="flex items-center gap-3">
-              <p>{user?.email}</p>
-              <p>{profile.username}</p>
-              <Button>Sign Out</Button>
-            </form>
-        </div>
-    );
+export default function page() {
+  return (
+      <div className="flex flex-col max-w-md pt-16 px-6 pb-6 min-h-screen mx-auto gap-6">
+          <div className='space-y-10'>
+                <PageHeader title="AnonFess" />
+                <ShareLink />
+          </div>
+          <hr className="border-dashed border-2 border-black w-full my-4" />
+          <Inbox>
+                <MessageList />
+          </Inbox>
+      </div>
+  );
 }
-
