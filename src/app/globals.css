@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+} */
+
+@layer base {
+  :root {
+    --background: #FFFFFF;  /* Default background color */
+    --foreground: #000000;
+    --card: #FFFFFF;  /* Card background color */
+    --card-foreground: #000000;
+    --popover: #FFFFFF;
+    --popover-foreground: #000000;
+    --primary: #A388EE;
+    --primary-foreground: #000000;
+    --secondary: #5AD775;
+    --secondary-foreground: #000000;
+    --muted: #F5F5F5; /* Muted backgrounds */
+    --muted-foreground: #6B7178;
+    --accent: #F5F5F5;
+    --accent-foreground: #000000;
+    --destructive: #FF7B7B;
+    --destructive-foreground: #F3F1FB;
+    --border: #000000;
+    --input: #e1e1e1;
+    --ring: #000000;
+    --chart-1: #f23e9d;
+    --chart-2: #23a599;
+    --chart-3: #2d6ca2;
+    --chart-4: #70bcff;
+    --chart-5: #ffb856;
+    --radius: 0.4rem;
+  }
+
+  .dark {
+    --background: #352b0a;
+    --foreground: #F3F1FB;
+    --card: #352b0a;
+    --card-foreground: #F3F1FB;
+    --popover: #352b0a;
+    --popover-foreground: #F3F1FB;
+    --primary: #F3F1FB;
+    --primary-foreground: #392002;
+    --secondary: #231010;
+    --secondary-foreground: #F3F1FB;
+    --muted: #231010;
+    --muted-foreground: #3d6463;
+    --accent: #231010;
+    --accent-foreground: #F3F1FB;
+    --destructive: #9f1d1d;
+    --destructive-foreground: #F3F1FB;
+    --border: #231010;
+    --input: #231010;
+    --ring: #3e9f9a;
+    --chart-1: #3486d7;
+    --chart-2: #388c65;
+    --chart-3: #4dcd8d;
+    --chart-4: #9f52d8;
+    --chart-5: #da46af;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .neu {
+    @apply mb-[-1px] mr-[-1px] border-[3px] shadow ;
+  }
+
+  .neu-pressed {
+    @apply translate-x-[2.5px] translate-y-[2.5px] shadow-active;
+  }
+
+  .neu-active:active {
+    @apply active:neu-pressed;
+  }
+
+  .neu-focus:focus {
+    @apply focus-visible:neu-pressed;
+  }
+
+  .neu-hover:hover {
+    @apply hover:neu-pressed;
+  }
+}
+
+::placeholder {
+  font-weight: bold;
+}
