@@ -72,15 +72,9 @@ const config: Config = {
 		},
 	},
 	plugins: [
+		// eslint-disable-next-line @typescript-eslint/no-require-imports
 		require("tailwindcss-animate"),
-		function({ addUtilities }) {
-			addUtilities({
-				'.text-shadow-custom': {
-					textShadow: '2px 2px 0px #A388EE',
-				},
-			});
-		}
-	],
+	]
 };
 
 export default config;
