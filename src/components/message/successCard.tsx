@@ -30,7 +30,7 @@ export default function SuccessCard({ username } : { username: string }) {
                     type="submit"
                     asChild
                 >
-                    <Link href="/">Cobain Sekarang</Link>
+                    <Link href="/">Cek Message Kamu</Link>
                 </Button>
 
                 {username && (

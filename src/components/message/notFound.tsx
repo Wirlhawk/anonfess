@@ -15,7 +15,7 @@ export default function NotFound() {
         <Card className="w-full max-w-[22rem] neu">
             <CardContent className="pt-8 ">
                 <div className="w-full flex items-center flex-col gap-4">
-                    <h1 className="font-bold text-7xl text-primary">404</h1>
+                    <h1 className="font-bold text-7xl text-secondary">404</h1>
                     <h1 className="font-bold text-xl">Tidak Dapat Di Temukan</h1>
                 </div>
             </CardContent>
