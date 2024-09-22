@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function PageHeaderBackButton({title} : {title : string}) {
     return (
         <div className="flex justify-between items-center">
-            <Link href="/anonfess">
+            <Link href="/">
                 <Button variant="ghost" size="icon" asChild>
                     <ChevronLeft size={35} strokeWidth={2.5} />
                 </Button>

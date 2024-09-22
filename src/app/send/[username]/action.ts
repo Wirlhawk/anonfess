@@ -30,7 +30,6 @@ export async function sendMessage(username: string ,userId: string, data: Messag
     
     if (error) {
         console.log("error : ", error.message)
-        // redirect('/login?message=Invalid email or password');
     }
 
     revalidatePath('/')

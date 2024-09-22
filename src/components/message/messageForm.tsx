@@ -27,8 +27,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { sendMessage } from '@/app/send/[username]/action';
 import { Message } from "@/types/custom";
 import Link from "next/link";
+import FormButton from '@/components/formButton'
+import { useState } from 'react';
 
 export default function MessageForm({profileData} : any) {
+    const [ loading, setLoading ] = useState(false)
+
     const form = useForm<z.infer<typeof messageSchema>>({
         resolver: zodResolver(messageSchema),
         defaultValues: {
@@ -40,18 +44,22 @@ export default function MessageForm({profileData} : any) {
     })
 
     async function onSubmit(values: z.infer<typeof messageSchema>) {
-        const data: Message = {
-            from: values.from || "",
-            to: values.to || "",
-            message: values.message,
-            music: values.music || "",
-        };
-
-        await sendMessage(profileData.username,profileData.id, data)
+        setLoading(true)
+        try {
+            const data: Message = {
+                from: values.from || "",
+                to: values.to || "",
+                message: values.message,
+                music: values.music || "",
+            }
+            await sendMessage(profileData.username,profileData.id, data)
+        } finally {
+            setLoading(false);
+        }
+        
     }
 
     const { settings } = profileData
-
 
     return (
         <CardWrapper profileData={profileData}>
@@ -123,15 +131,8 @@ export default function MessageForm({profileData} : any) {
                         />
                     )}
                     
-
                     {/* {message && <FormMessage>{message}</FormMessage>} */}
-                    <Button
-                        className="w-full mt-3 neu neu-active bg-secondary"
-                        size={"lg"}
-                        type="submit"
-                    >
-                        Kirim
-                    </Button>
+                    <FormButton title="Kirim" pending={loading} />
                 </form>
             </Form>
         </CardWrapper>

@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/server'
 import { Header } from 'next/dist/lib/load-custom-routes'
 import { Provider } from '@supabase/supabase-js'
 import { registerSchema, loginSchema } from "@/schema/index";
+import { sendMessage } from '../send/[username]/action'
 
 export async function emailLogin(data: { email: string; password: string }) {
     const supabase = createClient()
@@ -14,7 +15,6 @@ export async function emailLogin(data: { email: string; password: string }) {
     if (!parsedData.success) {
         throw new Error('Validation failed')
     }
-
 
     const { email, password } = parsedData.data
 
@@ -31,7 +31,7 @@ export async function emailLogin(data: { email: string; password: string }) {
     redirect('/');
 } 
 
-export async function signUp(data : {username: string,email:string,password:string}) {
+export async function signUp(data : { username: string, email: string, password: string }) {
     const supabase = createClient()
     const parsedData = registerSchema.safeParse(data)
 
@@ -74,6 +74,16 @@ export async function signUp(data : {username: string,email:string,password:stri
         console.log(profileError)
         redirect('/register?message=Gagal Register Profile')
     }
+
+    await supabase
+        .from('messages')
+        .insert([{
+            user_id: userId,
+            from : "AnonFess",
+            to : "" ,
+            message : `Halo @${username}, Selamat datang di AnonnFess. admin -R`,
+            music : "",
+        }])
 
     revalidatePath('/', 'layout')
     redirect('/')
@@ -129,4 +139,49 @@ export async function getUserProfileByUsername( username :string ){
     }
 
     return data
+}
+
+export async function updateSetting({ username, key, value }: { username: string; key: string; value: boolean }) {
+    const supabase = createClient();
+
+    // Fetch the current profile settings
+    const { data: profileData, error: fetchError } = await supabase
+        .from('profiles')
+        .select('settings')
+        .eq('username', username)
+        .single()
+
+    if (fetchError || !profileData) {
+        console.error('Error fetching profile:', fetchError?.message);
+        return null
+    }
+
+    const currentSettings = profileData.settings || {}
+
+    // Update the settings
+    const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+            settings: {
+                ...currentSettings,
+                [key]: value,
+            },
+        })
+        .eq('username', username);
+
+    if (updateError) {
+        console.error('Error updating setting:', updateError.message)
+        return null
+    }
+
+    revalidatePath('/')
+}
+
+export async function authRouteMiddleware() {
+    const supabase = createClient()
+    const {data:{user}} = await supabase.auth.getUser()
+
+    if(user){
+        return redirect('/')
+    }
 }

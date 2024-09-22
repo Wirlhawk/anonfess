@@ -1,13 +1,5 @@
 "use client";
 import { signUp } from "@/app/(auth)/action";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 import {
     Form,
     FormControl,
@@ -22,8 +14,12 @@ import { useForm } from "react-hook-form";
 import { registerSchema } from "@/schema/index";
 import { z } from "zod";
 import CardWrapper from "./cardWrapper";
+import FormButton from '@/components/formButton'
+import { useState } from "react";
 
 export function RegisterForm({ message }: { message?: string }) {
+    const [loading, setLoading] = useState(false);
+
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -34,12 +30,17 @@ export function RegisterForm({ message }: { message?: string }) {
     });
 
     async function onSubmit(values: z.infer<typeof registerSchema>) {
-        const data = {
-            username: values.username,
-            email: values.email,
-            password: values.password,
-        };
-        await signUp(data);
+        setLoading(true);
+        try {
+            const data = {
+                username: values.username,
+                email: values.email,
+                password: values.password,
+            };
+            await signUp(data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -99,13 +100,7 @@ export function RegisterForm({ message }: { message?: string }) {
 
                     {message && <FormMessage>{message}</FormMessage>}
 
-                    <Button
-                        className="w-full mt-3 neu neu-active bg-secondary"
-                        size={"lg"}
-                        type="submit"
-                    >
-                        Register
-                    </Button>
+                    <FormButton title="Register" pending={loading} />
                 </form>
             </Form>
         </CardWrapper>

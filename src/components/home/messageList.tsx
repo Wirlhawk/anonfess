@@ -4,8 +4,6 @@ import { getAllMessage } from '@/app/message/[id]/action';
 
 export default async function MessageList() {
   const messages = await getAllMessage();
-
-  console.log(messages)
   return (
     <div className="grid grid-cols-3 gap-6 mt-4">
       {messages?.length === 0 ? (

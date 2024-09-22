@@ -1,6 +1,5 @@
 "use client";
 import { emailLogin } from "@/app/(auth)/action";
-import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -15,8 +14,12 @@ import { useForm } from "react-hook-form";
 import { loginSchema } from "@/schema/index";
 import { z } from "zod";
 import CardWrapper from "./cardWrapper";
+import { useState } from "react";
+import FormButton from "@/components/formButton";
 
 export function LoginForm({ message }: { message?: string }) {
+    const [loading, setLoading] = useState(false);
+
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -26,11 +29,16 @@ export function LoginForm({ message }: { message?: string }) {
     });
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
-        const data = {
-            email: values.email,
-            password: values.password,
-        };
-        await emailLogin(data);
+        setLoading(true)
+        try {
+            const data = {
+                email: values.email,
+                password: values.password,
+            };
+            await emailLogin(data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -77,13 +85,7 @@ export function LoginForm({ message }: { message?: string }) {
 
                     {message && <FormMessage>{message}</FormMessage>}
 
-                    <Button
-                        className="w-full mt-3 neu neu-active bg-secondary"
-                        size={"lg"}
-                        type="submit"
-                    >
-                        Login
-                    </Button>
+                    <FormButton title="Login" pending={loading} />
                 </form>
             </Form>
         </CardWrapper>
