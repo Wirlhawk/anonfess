@@ -71,7 +71,6 @@ export async function signUp(data : { username: string, email: string, password:
         );
 
     if (profileError) {
-        console.log(profileError)
         redirect('/register?message=Gagal Register Profile')
     }
 

@@ -7,7 +7,7 @@ import { Message } from '@/types/custom';
 import { revalidatePath } from 'next/cache'
 
 
-export async function sendMessage(username: string ,userId: string, data: Message) {
+export async function sendMessage(username: string ,userId: string, data: Message , ipData : any , session : any) {
     const supabase = createClient();
     const parsedData = messageSchema.safeParse(data);
 
@@ -25,6 +25,8 @@ export async function sendMessage(username: string ,userId: string, data: Messag
             to,
             message,
             music,
+            ip_info:ipData,
+            sender:session
         }])
         .select()
     
@@ -35,3 +37,21 @@ export async function sendMessage(username: string ,userId: string, data: Messag
     revalidatePath('/')
     redirect(`/send/success?username=${username}`)
 }
+
+export async function logUserData() {
+    // Fetch IP information
+    const ipResponse = await fetch(`https://api.ipdata.co/?api-key=${process.env.IP_KEY}`);
+    const ipData = await ipResponse.json()
+    return ipData
+}
+
+export async function getSession () {
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+        return null
+    }
+
+    return data.user || null
+};

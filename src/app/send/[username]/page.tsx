@@ -11,10 +11,10 @@ export async function generateMetadata(
     // read route params
     const { username } = params
     return {
-        title: `Kirim Pesan Rahasia ke ${username}`,
+        title: `Kirim Pesan Rahasia ke @${username}`,
         description: "AnonFess, Kirim Pesan Rahasia!",
         openGraph: {
-            title: `Kirim Pesan Rahasia ke ${username}`,
+            title: `Kirim Pesan Rahasia ke @${username}`,
             description: "Kirim Pesan Rahasia dengan AnonFess!",
             images: [
                 {
@@ -27,7 +27,7 @@ export async function generateMetadata(
         },
         twitter: {
             card: "summary_large_image",
-            title: `Kirim Pesan Rahasia ke ${username}`,
+            title: `Kirim Pesan Rahasia ke @${username}`,
             description: "Kirim Pesan Rahasia dengan AnonFess!",
             images: ["/assets/banner.png"],
         },

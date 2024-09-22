@@ -16,7 +16,6 @@ import CopyLink from './copyLink';
 
 
 export default function ShareLink({ profile } : { profile : any} ) {
-    console.log("gaboleh ada message",profile)
 
     return (
         <Dialog>

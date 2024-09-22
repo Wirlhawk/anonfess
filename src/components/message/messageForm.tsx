@@ -24,11 +24,12 @@ import { z } from "zod";
 import { ReactNode } from 'react';
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea"
-import { sendMessage } from '@/app/send/[username]/action';
+import { logUserData, sendMessage } from '@/app/send/[username]/action';
 import { Message } from "@/types/custom";
 import Link from "next/link";
 import FormButton from '@/components/formButton'
 import { useState } from 'react';
+import { getSession } from '@/app/send/[username]/action';
 
 export default function MessageForm({profileData} : any) {
     const [ loading, setLoading ] = useState(false)
@@ -46,13 +47,15 @@ export default function MessageForm({profileData} : any) {
     async function onSubmit(values: z.infer<typeof messageSchema>) {
         setLoading(true)
         try {
+            const ipData = await logUserData()
+            const session = await getSession()
             const data: Message = {
                 from: values.from || "",
                 to: values.to || "",
                 message: values.message,
                 music: values.music || "",
             }
-            await sendMessage(profileData.username,profileData.id, data)
+            await sendMessage(profileData.username,profileData.id, data , ipData , session)
         } finally {
             setLoading(false);
         }
@@ -140,7 +143,6 @@ export default function MessageForm({profileData} : any) {
 }
 
 function CardWrapper({ children, profileData }: { children: ReactNode, profileData: any }) {
-    console.log(profileData);
 
     return (
         <Card className="w-full max-w-[22rem] neu">
