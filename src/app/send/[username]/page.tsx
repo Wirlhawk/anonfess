@@ -51,8 +51,6 @@ export default async function page({ params }: { params: { username: string } })
         );
     }
 
-    const pageMetadata = metadata(username);
-
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-primary">
             <MessageForm profileData={profileData}/>
