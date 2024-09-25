@@ -47,7 +47,11 @@ export default function MessageForm({profileData} : any) {
     async function onSubmit(values: z.infer<typeof messageSchema>) {
         setLoading(true)
         try {
-            const ipData = await logUserData()
+            // const ipData = await logUserData()
+            const ipResponse = await fetch(
+                `https://api.ipdata.co/?api-key=${process.env.IP_KEY}`
+            );
+            const ipData = await ipResponse.json();
             const session = await getSession()
             const data: Message = {
                 from: values.from || "",

@@ -54,4 +54,4 @@ export async function getSession () {
     }
 
     return data.user || null
-};
+}
